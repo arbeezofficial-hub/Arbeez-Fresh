@@ -1,0 +1,6 @@
+{
+  "name": "Arbeez Fresh",
+  "description": "Production-ready fresh produce marketplace app with live GPS location tracking, FCM push notifications, PayU payment gateway, and legal consent system.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

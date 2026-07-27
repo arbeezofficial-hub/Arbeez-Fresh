@@ -1,0 +1,119 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with roles, phone number, location and FCM token",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "roles": { "type": "array" },
+        "status": { "type": "string" },
+        "fcmToken": { "type": "string" },
+        "location": { "type": "object" },
+        "legalAgreements": { "type": "object" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["uid"]
+    },
+    "Shop": {
+      "title": "Shop",
+      "description": "Market vendor shop details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "vendorId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string" },
+        "rating": { "type": "number" },
+        "location": { "type": "object" },
+        "deliveryFee": { "type": "number" },
+        "freeDeliveryThreshold": { "type": "number" },
+        "maxDeliveryDistance": { "type": "number" }
+      },
+      "required": ["id", "vendorId", "name"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Catalog items sold by vendors",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "unit": { "type": "string" },
+        "inStock": { "type": "boolean" }
+      },
+      "required": ["id", "shopId", "name", "price"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Marketplace order placed by customer",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerId": { "type": "string" },
+        "shopId": { "type": "string" },
+        "deliveryPartnerId": { "type": "string" },
+        "status": { "type": "string" },
+        "grandTotal": { "type": "number" },
+        "deliveryAddress": { "type": "object" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "customerId", "shopId", "grandTotal"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "Real-time user notification",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "userId", "title", "message"]
+    },
+    "LiveLocation": {
+      "title": "LiveLocation",
+      "description": "Real-time delivery driver location tracking",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string" },
+        "driverId": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "speed": { "type": "number" },
+        "heading": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["orderId", "driverId", "lat", "lng"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "User", "description": "User accounts" },
+    "/categories/{categoryId}": { "schema": "Category", "description": "Product categories" },
+    "/shops/{shopId}": { "schema": "Shop", "description": "Market vendor shops" },
+    "/products/{productId}": { "schema": "Product", "description": "Vendor product catalog" },
+    "/orders/{orderId}": { "schema": "Order", "description": "Customer orders" },
+    "/orderItems/{itemId}": { "schema": "OrderItem", "description": "Line items for orders" },
+    "/payments/{paymentId}": { "schema": "Payment", "description": "Payment records" },
+    "/transactions/{transactionId}": { "schema": "Transaction", "description": "Financial transaction ledger" },
+    "/receipts/{receiptId}": { "schema": "Receipt", "description": "Order receipts" },
+    "/invoices/{invoiceId}": { "schema": "Invoice", "description": "Tax invoices" },
+    "/coupons/{couponId}": { "schema": "Coupon", "description": "Promotional discount coupons" },
+    "/settings/{settingId}": { "schema": "Settings", "description": "Platform global configuration" },
+    "/subscriptions/{subscriptionId}": { "schema": "Subscription", "description": "Arbeez Fresh Plus subscriptions" },
+    "/vendor_notifications/{notifId}": { "schema": "VendorNotification", "description": "Notifications for merchants" },
+    "/notifications/{notifId}": { "schema": "Notification", "description": "System & FCM notifications" },
+    "/settlements/{settlementId}": { "schema": "Settlement", "description": "Vendor financial settlement payouts" },
+    "/reviews/{reviewId}": { "schema": "Review", "description": "Order rating reviews" },
+    "/liveLocations/{orderId}": { "schema": "LiveLocation", "description": "Real-time GPS delivery coordinates" }
+  }
+}
