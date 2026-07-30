@@ -36,9 +36,7 @@ export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 // Initialize Services
 export const auth = getAuth(app);
-export const db = initializeFirestore(app, {
-  experimentalForceLongPolling: true,
-}, config.firestoreDatabaseId || undefined);
+export const db = getFirestore(app, config.firestoreDatabaseId || undefined);
 export const storage = getStorage(app);
 export const functions = getFunctions(app);
 

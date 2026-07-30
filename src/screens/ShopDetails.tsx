@@ -5,6 +5,7 @@ import { db } from '../lib/firebase';
 import { Shop, Product } from '../types';
 import { ArrowLeft, Star, Clock, Info, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { useCartStore } from '../store/useCartStore';
+import { Loader } from '../components/Loader';
 import brandLogo from '../assets/logo';
 
 export const ShopDetails = () => {
@@ -40,12 +41,9 @@ export const ShopDetails = () => {
   }, [id]);
 
   if (loading) return (
-    <div className="h-screen w-full bg-slate-50 flex items-center justify-center font-sans">
-      <div className="flex flex-col items-center animate-pulse">
-        <div className="h-24 mb-4">
-          <img src={brandLogo} alt="Arbeez Fresh Logo" className="h-full w-auto object-contain grayscale opacity-50" />
-        </div>
-      </div>
+    <div className="h-screen w-full bg-slate-50 flex flex-col items-center justify-center font-sans">
+      <Loader size="lg" color="primary" />
+      <span className="mt-4 text-slate-500 font-medium">Loading Shop Details...</span>
     </div>
   );
   if (!shop) return <div className="p-8 text-center mt-20 font-black text-2xl text-slate-400 uppercase tracking-tight">Shop not found</div>;

@@ -5,6 +5,7 @@ import { db } from '../lib/firebase';
 import { Receipt as ReceiptType, Invoice as InvoiceType, Order as OrderType } from '../types';
 import { ArrowLeft, CheckCircle2, XCircle, Clock, Download, Share2, FileText, ShieldCheck, Truck, Store, MapPin } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { Loader } from '../components/Loader';
 
 export const Receipt = () => {
   const { id } = useParams<{ id: string }>();
@@ -75,8 +76,8 @@ export const Receipt = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex justify-center items-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="flex flex-col items-center gap-4">
+          <Loader size="lg" color="primary" />
           <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Verifying PayU Receipt...</p>
         </div>
       </div>

@@ -7,6 +7,7 @@ import { useAuthStore } from '../store/useAuthStore';
 import { ArrowLeft, MapPin, Store, Truck, CheckCircle2, Phone, Star, FileText } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { InteractiveMap } from '../components/InteractiveMap';
+import { Loader } from '../components/Loader';
 import { haversineDistance, estimateDeliveryTime } from '../services/location.service';
 import { sendNotificationViaServer } from '../services/messaging.service';
 
@@ -122,9 +123,9 @@ export const OrderTracking = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center font-sans">
-        <div className="text-center space-y-3">
-          <Truck size={36} className="mx-auto text-emerald-600 animate-bounce" />
-          <p className="text-xs font-black uppercase tracking-widest text-slate-500">Loading Order Tracking GPS...</p>
+        <div className="text-center space-y-4">
+          <Loader size="lg" color="primary" />
+          <p className="text-xs font-black uppercase tracking-widest text-slate-500 block">Loading Order Tracking GPS...</p>
         </div>
       </div>
     );
