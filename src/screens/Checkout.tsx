@@ -6,6 +6,7 @@ import { ArrowLeft, MapPin, ReceiptText, ShieldCheck, Crown, Sparkles, CreditCar
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import toast from 'react-hot-toast';
+import { Loader } from '../components/Loader';
 import { PlatformSettings, Subscription } from '../types';
 import { 
   fetchPlatformSettings, 
@@ -376,7 +377,7 @@ export const Checkout = () => {
         >
           {isProcessing ? (
             <div className="flex items-center gap-3">
-              <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+              <Loader size="sm" color="white" />
               <span>Connecting to PayU Gateway...</span>
             </div>
           ) : (

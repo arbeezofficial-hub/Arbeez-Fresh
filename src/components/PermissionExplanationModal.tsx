@@ -4,6 +4,7 @@ import { detectPlatform, requestAndSaveLocation, requestAndSaveNotifications } f
 import { useAuthStore } from '../store/useAuthStore';
 import { useLocationStore } from '../store/useLocationStore';
 import toast from 'react-hot-toast';
+import { Loader } from './Loader';
 
 interface PermissionExplanationModalProps {
   isOpen: boolean;
@@ -156,7 +157,7 @@ export const PermissionExplanationModal: React.FC<PermissionExplanationModalProp
                   className="flex-1 py-3 px-4 rounded-2xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-700 shadow-lg shadow-emerald-600/25 transition-all flex items-center justify-center gap-2"
                 >
                   {loading ? (
-                    <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <Loader size="sm" color="white" />
                   ) : (
                     <>
                       <CheckCircle2 size={18} />

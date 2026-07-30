@@ -5,6 +5,8 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { fetchPlatformSettings } from '../services/paymentEngine';
 
+import { Loader } from '../components/Loader';
+
 export const AdminSetup = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -206,9 +208,16 @@ export const AdminSetup = () => {
         <button
           onClick={handleSeedData}
           disabled={loading}
-          className="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl hover:bg-emerald-700 disabled:opacity-50 transition-colors uppercase tracking-wide text-sm shadow-sm"
+          className="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl hover:bg-emerald-700 disabled:opacity-50 transition-colors uppercase tracking-wide text-sm shadow-sm flex justify-center items-center gap-2"
         >
-          {loading ? 'Seeding...' : 'Populate Sample Database & Settings'}
+          {loading ? (
+            <>
+              <Loader size="sm" color="white" />
+              Seeding...
+            </>
+          ) : (
+            'Populate Sample Database & Settings'
+          )}
         </button>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { db } from '../lib/firebase';
 import { RoleApplication, Role } from '../types';
 import { Store, Truck, ArrowLeft, ShieldCheck, CheckCircle2, Sparkles, Building2, MapPin, Phone } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { Loader } from '../components/Loader';
 
 export const BecomePartner = () => {
   const [searchParams] = useSearchParams();
@@ -239,9 +240,16 @@ export const BecomePartner = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-slate-900 text-white font-black py-4 rounded-2xl text-xs uppercase tracking-wider hover:bg-slate-800 transition-colors shadow-sm"
+                className="w-full bg-slate-900 text-white font-black py-4 rounded-2xl text-xs uppercase tracking-wider hover:bg-slate-800 transition-colors shadow-sm flex items-center justify-center gap-2"
               >
-                {loading ? 'Submitting Application...' : 'Submit Partner Application'}
+                {loading ? (
+                  <>
+                    <Loader size="sm" color="white" />
+                    Submitting Application...
+                  </>
+                ) : (
+                  'Submit Partner Application'
+                )}
               </button>
 
               <button
