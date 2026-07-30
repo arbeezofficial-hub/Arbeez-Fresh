@@ -5,10 +5,12 @@ export interface LegalConsent {
   policyVersion: string;
   termsAccepted: boolean;
   privacyAccepted: boolean;
+  dataConsent: boolean;
   locationConsent: boolean;
   notificationConsent: boolean;
   acceptedAt: number;
   platform: string;
+  appVersion?: string;
 }
 
 export interface CustomerLocation {

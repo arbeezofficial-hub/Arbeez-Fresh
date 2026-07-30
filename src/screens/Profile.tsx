@@ -7,6 +7,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { Receipt, Invoice } from '../types';
 import { PermissionExplanationModal } from '../components/PermissionExplanationModal';
+import { LegalConsentModal } from '../components/LegalConsentModal';
 
 export const Profile = () => {
   const { user } = useAuthStore();
@@ -17,6 +18,7 @@ export const Profile = () => {
   const [activeTab, setActiveTab] = useState<'menu' | 'orders' | 'invoices' | 'legal'>('menu');
   const [loading, setLoading] = useState(false);
   const [showPermissionModal, setShowPermissionModal] = useState(false);
+  const [showLegalModal, setShowLegalModal] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -279,47 +281,15 @@ export const Profile = () => {
               <h3 className="font-black text-slate-900 uppercase tracking-tight text-xs text-slate-400">View Legal Documents</h3>
 
               <div className="grid grid-cols-1 gap-2 text-xs font-black">
-                <Link to="/legal/privacy" target="_blank" className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 text-slate-800">
+                <button 
+                  onClick={() => setShowLegalModal(true)} 
+                  className="w-full flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 text-slate-800 transition-colors"
+                >
                   <span className="flex items-center gap-2">
-                    <Lock size={16} className="text-slate-500" /> Privacy Policy
+                    <ShieldCheck size={16} className="text-slate-500" /> Review Legal Documents & Policies
                   </span>
                   <ExternalLink size={14} className="text-slate-400" />
-                </Link>
-
-                <Link to="/legal/terms" target="_blank" className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 text-slate-800">
-                  <span className="flex items-center gap-2">
-                    <FileText size={16} className="text-slate-500" /> Terms & Conditions
-                  </span>
-                  <ExternalLink size={14} className="text-slate-400" />
-                </Link>
-
-                <Link to="/legal/community" target="_blank" className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 text-slate-800">
-                  <span className="flex items-center gap-2">
-                    <CheckCircle2 size={16} className="text-slate-500" /> Community Guidelines
-                  </span>
-                  <ExternalLink size={14} className="text-slate-400" />
-                </Link>
-
-                <Link to="/legal/refund" target="_blank" className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 text-slate-800">
-                  <span className="flex items-center gap-2">
-                    <FileText size={16} className="text-slate-500" /> Refund & Cancellation Policy
-                  </span>
-                  <ExternalLink size={14} className="text-slate-400" />
-                </Link>
-
-                <Link to="/legal/delivery" target="_blank" className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 text-slate-800">
-                  <span className="flex items-center gap-2">
-                    <Truck size={16} className="text-slate-500" /> Delivery Policy
-                  </span>
-                  <ExternalLink size={14} className="text-slate-400" />
-                </Link>
-
-                <Link to="/legal/cookies" target="_blank" className="flex items-center justify-between p-3 bg-slate-50 rounded-xl hover:bg-slate-100 text-slate-800">
-                  <span className="flex items-center gap-2">
-                    <FileText size={16} className="text-slate-500" /> Data Usage & Cookie Notice
-                  </span>
-                  <ExternalLink size={14} className="text-slate-400" />
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -418,6 +388,11 @@ export const Profile = () => {
       <PermissionExplanationModal
         isOpen={showPermissionModal}
         onClose={() => setShowPermissionModal(false)}
+      />
+
+      <LegalConsentModal 
+        isOpen={showLegalModal} 
+        onClose={() => setShowLegalModal(false)}
       />
     </div>
   );

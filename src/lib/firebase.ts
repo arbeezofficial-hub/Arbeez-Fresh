@@ -3,6 +3,7 @@ import {
   getAuth, 
   GoogleAuthProvider, 
   signInWithPopup, 
+  signInAnonymously,
   signOut, 
   RecaptchaVerifier, 
   signInWithPhoneNumber, 
@@ -80,17 +81,45 @@ export const loginWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, googleProvider);
     return result.user;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error signing in with Google", error);
+    if (error?.code === 'auth/unauthorized-domain' || error?.message?.includes('unauthorized-domain')) {
+      const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
+      const customErr = new Error(
+        `Firebase Auth Domain Unauthorized: The domain "${hostname}" is not authorized in your Firebase console. Add "${hostname}" under Firebase Console -> Authentication -> Settings -> Authorized domains.`
+      );
+      (customErr as any).code = 'auth/unauthorized-domain';
+      (customErr as any).hostname = hostname;
+      throw customErr;
+    }
     throw error;
+  }
+};
+
+export const loginAnonymously = async () => {
+  try {
+    const result = await signInAnonymously(auth);
+    return result.user;
+  } catch (error: any) {
+    // Return local guest session if Firebase Anonymous auth is disabled or blocked
+    return {
+      uid: 'guest-' + Math.random().toString(36).substring(2, 10),
+      email: 'guest@arbeezfresh.local',
+      displayName: 'Guest / Demo User',
+      photoURL: null,
+      phoneNumber: null,
+      isAnonymous: true,
+    } as any;
   }
 };
 
 export const logout = async () => {
   try {
+    localStorage.removeItem('arbeez_guest_user');
     await signOut(auth);
   } catch (error) {
     console.error("Error signing out", error);
+    localStorage.removeItem('arbeez_guest_user');
     throw error;
   }
 };

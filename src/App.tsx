@@ -20,7 +20,6 @@ import { OrderTracking } from './screens/OrderTracking';
 import { BecomePartner } from './screens/BecomePartner';
 import { VendorDashboard } from './screens/VendorDashboard';
 import { DeliveryDashboard } from './screens/DeliveryDashboard';
-import { LegalDoc } from './screens/LegalDoc';
 import { LegalConsentModal, CURRENT_POLICY_VERSION } from './components/LegalConsentModal';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -36,6 +35,7 @@ export default function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
+        localStorage.removeItem('arbeez_guest_user');
         const userRef = doc(db, 'users', firebaseUser.uid);
         const userSnap = await getDoc(userRef);
         
@@ -58,7 +58,16 @@ export default function App() {
         }
         setUser(userData);
       } else {
-        setUser(null);
+        const localGuest = localStorage.getItem('arbeez_guest_user');
+        if (localGuest) {
+          try {
+            setUser(JSON.parse(localGuest));
+          } catch (e) {
+            setUser(null);
+          }
+        } else {
+          setUser(null);
+        }
       }
       setLoading(false);
     });
@@ -81,8 +90,6 @@ export default function App() {
 
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/legal/:docType" element={<LegalDoc />} />
-        <Route path="/legal" element={<LegalDoc />} />
         <Route path="/admin/setup" element={<AdminSetup />} />
         
         <Route element={<Layout />}>
