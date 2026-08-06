@@ -111,10 +111,10 @@ export const LegalConsentModal = ({ onAccepted, onClose, isOpen }: LegalConsentM
 
       // Update user profile
       const userRef = doc(db, 'users', user.uid);
-      await updateDoc(userRef, {
+      await setDoc(userRef, {
         legalConsent: consentPayload,
         updatedAt: acceptedAt
-      });
+      }, { merge: true });
 
       // Update local state
       setUser({

@@ -24,6 +24,12 @@ service cloud.firestore {
       allow read: if isSignedIn();
       allow create, update: if isOwner(userId);
       allow delete: if false;
+      
+      match /consents/{policyVersion} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId);
+        allow delete: if false;
+      }
     }
 
     // Public catalogs (Shops, Categories, Products, Coupons, Settings)

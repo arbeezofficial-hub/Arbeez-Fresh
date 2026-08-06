@@ -42,7 +42,8 @@ export const useLocationStore = create<LocationState>((set, get) => ({
 
           try {
             // Reverse geocoding attempt via OpenStreetMap Nominatim
-            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+            const { fetchWithRetry } = await import('../lib/network');
+            const res = await fetchWithRetry(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`, { retries: 2, timeout: 5000 });
             if (res.ok) {
               const data = await res.json();
               addressName = data.display_name?.split(',').slice(0, 3).join(',') || addressName;

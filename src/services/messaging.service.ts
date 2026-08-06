@@ -89,7 +89,8 @@ export const sendNotificationViaServer = async ({
   data?: Record<string, any>;
 }): Promise<boolean> => {
   try {
-    const res = await fetch('/api/notifications/send', {
+    const { fetchWithRetry } = await import('../lib/network');
+    const res = await fetchWithRetry('/api/notifications/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -102,6 +103,8 @@ export const sendNotificationViaServer = async ({
         shopId,
         data,
       }),
+      retries: 3,
+      timeout: 10000
     });
 
     if (!res.ok) {

@@ -91,7 +91,8 @@ export async function reverseGeocode(
       '';
 
     if (apiKey && apiKey !== 'YOUR_API_KEY') {
-      const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`);
+      const { fetchWithRetry } = await import('../lib/network');
+      const res = await fetchWithRetry(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`, { retries: 2, timeout: 5000 });
       if (res.ok) {
         const data = await res.json();
         if (data.results && data.results.length > 0) {
@@ -138,8 +139,10 @@ export async function reverseGeocode(
     }
 
     // Fallback to nominatim if API key fails or is missing
-    const res = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`
+    const { fetchWithRetry } = await import('../lib/network');
+    const res = await fetchWithRetry(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`,
+      { retries: 2, timeout: 5000 }
     );
     if (res.ok) {
       const data = await res.json();

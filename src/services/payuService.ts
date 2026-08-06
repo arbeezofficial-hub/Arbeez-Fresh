@@ -55,7 +55,8 @@ export interface PayUVerifyResponse {
  */
 export async function getPayUConfig(): Promise<{ merchantKey: string; payuEnv: string; actionUrl: string; isMocking: boolean }> {
   try {
-    const res = await fetch('/api/payu/config');
+    const { fetchWithRetry } = await import('../lib/network');
+    const res = await fetchWithRetry('/api/payu/config', { retries: 2, timeout: 5000 });
     if (res.ok) {
       return await res.json();
     }
@@ -82,7 +83,8 @@ export async function requestPayUHash(params: {
   paymentMethod: string;
   udf1?: string;
 }): Promise<PayUHashResponse> {
-  const response = await fetch('/api/payu/hash', {
+  const { fetchWithRetry } = await import('../lib/network');
+  const response = await fetchWithRetry('/api/payu/hash', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(params)
@@ -112,7 +114,8 @@ export async function verifyPayUPaymentOnBackend(payload: {
   additionalCharges?: string;
   hash: string;
 }): Promise<PayUVerifyResponse> {
-  const response = await fetch('/api/payu/verify', {
+  const { fetchWithRetry } = await import('../lib/network');
+  const response = await fetchWithRetry('/api/payu/verify', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)

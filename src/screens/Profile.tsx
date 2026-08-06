@@ -362,7 +362,7 @@ export const Profile = () => {
                   </div>
 
                   <button 
-                    onClick={() => navigate(`/receipt/${inv.receiptId || inv.orderId}?invoiceId=${inv.id}`)}
+                    onClick={() => navigate(`/receipt/${inv.orderId}?invoiceId=${inv.id}`)}
                     className="w-full bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors"
                   >
                     <Download size={14} /> View / Print Tax Invoice

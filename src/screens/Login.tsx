@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import brandLogo from '../assets/logo';
 
 export const Login = () => {
-  const { user } = useAuthStore();
+  const { user, setUser } = useAuthStore();
   const navigate = useNavigate();
 
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -47,12 +47,14 @@ export const Login = () => {
 
     try {
       await setDoc(doc(db, 'users', uid, 'consents', CURRENT_POLICY_VERSION), consentPayload);
-      await updateDoc(doc(db, 'users', uid), {
+      await setDoc(doc(db, 'users', uid), {
         legalConsent: consentPayload,
         updatedAt: acceptedAt
-      }).catch(() => {});
+      }, { merge: true }).catch(() => {});
+      return consentPayload;
     } catch (e) {
       console.warn("Consent recording notice:", e);
+      return null;
     }
   };
 
@@ -66,9 +68,23 @@ export const Login = () => {
     setUnauthorizedDomainError(null);
 
     try {
+      console.log("[Auth] Initiating Google Login...");
       const loggedUser = await loginWithGoogle();
-      await recordConsent(loggedUser.uid);
+      console.log("[Auth] Google Login successful. UID:", loggedUser.uid);
+      
+      console.log("[Firestore Write] Recording legal consent...");
+      const consentPayload = await recordConsent(loggedUser.uid);
+      
+      // Update the user store directly if user was already set but missing consent
+      if (user && consentPayload) {
+        setUser({
+          ...user,
+          legalConsent: consentPayload
+        });
+      }
+
       toast.success('Successfully logged in & legal consent recorded!');
+      console.log("[Navigation] Navigating to Home...");
       navigate('/');
     } catch (error: any) {
       console.error("Login error:", error);
